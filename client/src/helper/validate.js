@@ -71,3 +71,8 @@ function emailVerify(error = {},values){
     }
     return error;
 }
+
+export async function profileValidation(values) {
+    const errors = emailVerify({}, values);
+    return errors;
+}
