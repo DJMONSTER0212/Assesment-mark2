@@ -47,7 +47,26 @@ const getUser = async (req,res)=>{
 }
 
 const updateUser = async(req,res) =>{
-    res.json("update uesr")
+    try {
+        const id = req.query.id;
+        console.log(id);
+        if(id){
+            const body = req.body;
+            // console.log(body);
+            const updated = await User.findByIdAndUpdate(id,body);
+            if(!updated){
+                return res.status(500).send({error:"Unable to update"});
+            }
+            return res.status(201).send({msg: "Updated User Data Successfully"});
+            
+        }else {
+            console.log(err)
+            return res.status(401).send("Error aa raha hai");
+        }
+
+    } catch (error) {
+        return res.status(401).send("Kyuin")
+    }
 }
 
 const resetPasswordController = async (req,res)=>{
