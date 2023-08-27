@@ -21,7 +21,7 @@ async function registerController(req,res){
             mobile
         })
         if(user){
-            res.status(201).send(user);
+            res.status(201).send({msg :"User Registered SuccessFully"});
         }
 
     } catch (error) {
@@ -30,7 +30,20 @@ async function registerController(req,res){
 }
 
 const getUser = async (req,res)=>{
-    res.json("getUser")
+    const {username} = req.params;
+    try {
+        if(!username){
+            return res.status(501).send({error:"Invalid UserName"})
+        }   
+        const user = await User.findOne({username});
+        if(!user){
+            return res.status(500).send({error:"Couldn't find the User!"});
+        }
+        const {password,...rest} = Object.assign({},user.toJSON());
+        return res.status(201).send(rest)
+    } catch (error) {
+        return res.status(404).send({error: "Cannot Find Userdata"})
+    }
 }
 
 const updateUser = async(req,res) =>{
