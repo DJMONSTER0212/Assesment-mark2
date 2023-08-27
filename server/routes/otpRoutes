@@ -1,0 +1,9 @@
+const express = require("express");
+const { generateOTP, verifyOTP } = require("../controllers/otpControllers");
+
+const router = express.Router();
+
+router.get('/generateOTP',generateOTP)
+router.get('/verifyOTP',verifyOTP)
+
+module.exports = router; 
