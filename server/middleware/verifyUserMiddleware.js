@@ -4,7 +4,6 @@ const bcrypt = require("bcrypt");
 
 const verifyUser = async(req,res,next)=>{
     const {username} = req.method=="GET"?req.query:req.body;
-
     try {
         let exist = await User.findOne({username});
         if(!exist) {
