@@ -72,7 +72,37 @@ const updateUser = async(req,res) =>{
 }
 
 const resetPasswordController = async (req,res)=>{
-    res.json("Reset Password")
+
+
+    try {
+        if(!req.app.locals.resetSession){
+            return res.status(440).send({error: "Session Expired...!"})
+        }
+        const {username,password} = req.body;
+
+        try {
+            const user = await User.findOne({username});
+            if(!user){
+                return res.status(404).send({error : "UserName Not Found"});
+            }
+            const hashedPassword= await bcrypt.hash(password,10)
+            if(!hashedPassword){
+                return res.status(500).send({error: "Unable to Hash Password"});
+            }
+            
+            const update = await User.findByIdAndUpdate(user._id,{password: hashedPassword})
+            if(!update){
+                return res.status(500).send({error: "Unable to Update Password"})
+            }
+
+            return res.status(201).send({msg:"Record Updated...!"})
+
+        } catch (error) {
+            return res.status(500).send({error});
+        }
+    } catch (error) {
+        return res.status(401).send({error})
+    }
 }
 
 module.exports = { registerController, resetPasswordController, getUser, updateUser }
