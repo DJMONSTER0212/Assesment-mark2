@@ -54,7 +54,7 @@ const updateUser = async(req,res) =>{
         // console.log(id);
         if(userId){
             const body = req.body;
-            console.log(body);
+            // console.log(body);
             const updated = await User.findByIdAndUpdate(userId,body);
             if(!updated){
                 return res.status(500).send({error:"Unable to update"});

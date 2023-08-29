@@ -1,16 +1,37 @@
 import React, { useState } from 'react'
-import { Link } from "react-router-dom"
+import { Link,useNavigate } from "react-router-dom"
 import Avatar from "../assets/profile.png"
 import styles from '../styles/Username.module.css'
-import { Toaster } from "react-hot-toast";
+import toast ,{ Toaster } from "react-hot-toast";
 import { useFormik } from 'formik'; //validating the form data
 import convertToBase64 from '../helper/convert';
 import { registerValidation } from '../helper/validate';
+import { registerUser } from '../helper/helper';
 
 const Register = () => {
 
-    const [file,setFile] = useState();
+    const navigate = useNavigate();
 
+    const [file,setFile] = useState();
+    const [file2,setFile2] = useState();
+    let imgUrl = '';
+
+    const fileUpload = async()=>{
+        const data = new FormData();
+        data.append("file",file)
+        data.append("upload_preset","DJ_Monster")
+        data.append("cloud_name","dqdpzwcqp")
+
+        await fetch("https://api.cloudinary.com/v1_1/dqdpzwcqp/image/upload",{
+            method:"post",
+            body:data
+        })
+        .then(async(res)=> await res.json())
+        .then(async (data)=>{ setFile2(data.url); console.log(file2)})
+        .catch((err)=>{
+            console.log(err)
+        })
+    }
     const formik = useFormik({
         initialValues: {
             email:'',
@@ -21,8 +42,16 @@ const Register = () => {
         validateOnBlur: false,
         validateOnChange: false,
         onSubmit: async values => {
+            // await fileUpload();
             values = await Object.assign(values,{profile : file||''});
-            console.log(values)
+            // console.log(values)
+            let registerPromise = registerUser(values);
+            toast.promise(registerPromise,{
+                loading:"Creating...",
+                success: <b>Registered Successfully...!</b>,
+                error:<b>Could Not register</b>
+            });
+            registerPromise.then(function(){navigate('/')});
         }
     })
 

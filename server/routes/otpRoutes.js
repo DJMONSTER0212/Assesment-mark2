@@ -6,6 +6,6 @@ const verifyUser = require("../middleware/verifyUserMiddleware");
 const router = express.Router();
 
 router.get('/generateOTP',verifyUser,LocalVariable,generateOTP)
-router.get('/verifyOTP',verifyOTP)
+router.get('/verifyOTP',verifyUser,verifyOTP)
 
 module.exports = router; 

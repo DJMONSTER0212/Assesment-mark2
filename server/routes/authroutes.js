@@ -4,8 +4,8 @@ const verifyUser = require("../middleware/verifyUserMiddleware");
 
 const router = express.Router();
 
-router.post('/authenticate', (req, res) => {
-    res.send("user Register Route")
+router.post('/authenticate',verifyUser, (req, res) => {
+    res.status(200).send({msg:"Authenticate route"});
 })
 router.post('/login',verifyUser,LoginController);
 

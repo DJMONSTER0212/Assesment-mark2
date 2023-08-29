@@ -1,31 +1,42 @@
 import React, { useState } from 'react'
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Avatar from "../assets/profile.png"
 import styles from '../styles/Username.module.css'
-import { Toaster } from "react-hot-toast";
+import toast,{ Toaster } from "react-hot-toast";
 import { useFormik } from 'formik'; //validating the form data
 import convertToBase64 from '../helper/convert';
 import { profileValidation } from '../helper/validate';
 import extend from "../styles/Profile.module.css";
+import useFetch from '../hooks/fetch.hook';
+import { useAuthStore } from '../store/store';
+import { updateUser } from '../helper/helper';
 
 const Profile = () => {
-
+    const navigate = useNavigate();
+    
     const [file, setFile] = useState();
-
+    const [{ isLoading, apiData, serverError }] = useFetch();
     const formik = useFormik({
         initialValues: {
-            firstName:'',
-            lastName:'',
-            email: '',
-            mobile: '',
-            address: ''
+            firstName:apiData?.firstName||'',
+            lastName:apiData?.lastName||'',
+            email: apiData?.email||'',
+            mobile: apiData?.mobile||'',
+            address: apiData?.address||''
         },
+        enableReinitialize: true,
         validate: profileValidation,
         validateOnBlur: false,
         validateOnChange: false,
         onSubmit: async values => {
             values = await Object.assign(values, { profile: file || '' });
-            console.log(values)
+            let updatePromise = updateUser(values)
+            toast.promise(updatePromise,{
+                loading:'Updating...',
+                success: <b>Updated SuccessFully</b>,
+                error: <b>Could not Update!</b>
+            });
+            // console.log(values)
         }
     })
 
@@ -34,6 +45,13 @@ const Profile = () => {
         setFile(base64);
     }
 
+    function userLogout(){
+        localStorage.removeItem('token');
+        navigate('/');
+    }
+
+    if (isLoading) return <h1 style={{ marginTop: "50px" }} className='text-2xl font-bold text-center'>isLoading</h1>
+    if (serverError) return <h1 style={{ marginTop: "50px" }} className='text-xl text-center text-red-500'>{serverError.message}</h1>
 
     return (
         <div className='container mx-auto  '>
@@ -47,7 +65,7 @@ const Profile = () => {
                     <form className='py-1 ' onSubmit={formik.handleSubmit} >
                         <div className='profile flex justify-center py-4 '>
                             <label htmlFor="profile">
-                                <img src={file || Avatar} className={`${styles.profile_img} ${extend.profile_img}`} alt="avatar" />
+                                <img src={apiData?.profile||file || Avatar} className={`${styles.profile_img} ${extend.profile_img}`} alt="avatar" />
                             </label>
                             <input onChange={onUpload} type="file" id='profile' name='profile' />
                         </div>
@@ -62,11 +80,11 @@ const Profile = () => {
                             </div>
                             <div className="name flex w-3/4 gap-10 ">
                                 <input {...formik.getFieldProps('address')} className={`${styles.textbox} ${extend.textbox}`} type="text" placeholder='Address.' />
-                                <button className={styles.btn} type='submit'>Register</button>
+                                <button className={styles.btn} type='submit'>Update</button>
                             </div>
                         </div>
                         <div className="text-center py-4 ">
-                            <span className='text-gray-500'>Come back Later? <Link className='text-red-500' to='/'>Logout</Link></span>
+                            <span className='text-gray-500'>Come back Later? <Link onClick={userLogout} className='text-red-500' to='/'>Logout</Link></span>
                         </div>
                     </form>
                 </div>
