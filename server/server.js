@@ -13,6 +13,7 @@ app.disable("x-powered-by")
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
+const taskRoutes = require("./routes/taskRoutes");
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authroutes");
 const otpRoutes = require("./routes/otpRoutes");
@@ -24,6 +25,7 @@ app.get('/',(req,res)=>{
     res.status(201).json("Home Get Request")
 });
 
+app.use('/api/task',taskRoutes);
 app.use('/api/user',userRoutes);
 app.use('/api/auth',authRoutes);
 app.use('/api/otp', otpRoutes);

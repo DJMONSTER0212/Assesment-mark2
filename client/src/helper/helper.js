@@ -76,12 +76,13 @@ export const generateOTP = async (username)=>{
         const {data:{code},status} = await axios.get('/api/otp/generateOTP',{params:{username}})
 
         if(status===201){
-            let {data:{email}} = await getUser({username})
-            
+            let data = await getUser({username})
+            // console.log(email)
+            // console.log(data.email)
             let text = `Your Password recovery OTP is ${code}.Verify and Recover your password`;
-            await axios.post('/api/user/registerMail',{username,userEmail : email, text,subject:"Password Recovery OTP"})
+            await axios.post('/api/user/registerMail',{username,userEmail : data.email, text,subject:"Password Recovery OTP"})
         }
-
+        // console.log()
         return Promise.resolve(code);
     } catch (error) {
         return Promise.reject({error})
@@ -101,6 +102,8 @@ export const verifyOTP = async ({username,code})=>{
 export const resetPassword = async ({username,password})=>{
     try {
         const { data, status } = await axios.put('/api/user/resetPassword',{username,password});
+        // console.log(Promise.resolve({ data, status }));
+        
         return Promise.resolve({data,status})
     } catch (error) {
         return Promise.reject({ error })

@@ -94,7 +94,7 @@ const resetPasswordController = async (req,res)=>{
             if(!update){
                 return res.status(500).send({error: "Unable to Update Password"})
             }
-
+            // console.log("done")
             return res.status(201).send({msg:"Record Updated...!"})
 
         } catch (error) {
