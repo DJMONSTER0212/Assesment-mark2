@@ -13,6 +13,7 @@ import { updateUser } from '../helper/helper';
 
 const Profile = () => {
     const navigate = useNavigate();
+    // const {username} = useA
     
     const [file, setFile] = useState();
     const [{ isLoading, apiData, serverError }] = useFetch();

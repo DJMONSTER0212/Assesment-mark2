@@ -2,12 +2,23 @@ const Task = require("../models/taskModel")
 
 const createTask = async (req,res)=>{
     const { title, description, priority, username } = req.body;
+
     try {
         if(!title||!description||!priority||!username){
             return res.status(404).send({msg: "Please all the fields"});
         }
+        let Pvalue = 0;
+        if(priority==="High"){
+            Pvalue = 2;
+        }
+        else if(priority==="Mid"){
+            Pvalue = 1;
+        }
+        else if(priority==="Low"){
+            Pvalue = 0;
+        }
         const task = await Task.create({
-            title, description, priority, username
+            title, description, priority:Pvalue, username
         });
         if(!task){
             return res.status(500).send({msg:"unable to create Task"})
@@ -75,4 +86,16 @@ const updateTask = async (req, res) => {
     }
 }
 
-module.exports = { createTask, getAllTasks, deleteTask,updateTask }
+const getTask = async(req,res)=>{
+    const {taskId} = req.params;
+    try {
+        if(!taskId) return res.status(404).send({msg :"TaskId not found"});
+            const task=await Task.findById(taskId);
+            if(!task) return res.status(404).send({msg:"unable to find task"});
+            return res.status(201).send(task);
+    } catch (error) {
+        return res.status(500).send({msg:"Something went wrong"});
+    }
+}
+
+module.exports = { createTask, getAllTasks, deleteTask, updateTask, getTask }

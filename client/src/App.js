@@ -10,6 +10,8 @@ import Reset from './components/Reset';
 import PageNotFound from './components/PageNotFound';
 
 import { AuthorizeUser, ProtectRoute } from './middleware/auth';
+import Dashboard from './components/Dashboard';
+import CreateTask from './components/CreateTask';
 
 
 
@@ -43,6 +45,14 @@ const router = createBrowserRouter([
   {
     path: '*',
     element: <PageNotFound/>
+  },
+  {
+    path: '/dashboard',
+    element: <Dashboard />
+  },
+  {
+    path: '/create',
+    element: <CreateTask />
   },
   
 ])

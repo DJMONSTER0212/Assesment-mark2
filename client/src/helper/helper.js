@@ -110,4 +110,13 @@ export const resetPassword = async ({username,password})=>{
     }
 }
 
+export const createTask = async ({username,title,description,priority})=>{
+    try {
+        const {data,status} = await axios.post('/api/task/create',{username,title,description,priority});
+        return Promise.resolve({status});
+    } catch (error) {
+        return Promise.reject({error});
+    }
+}
+
 // module = { resetPassword, verifyOTP, generateOTP, updateUser, verifyPassword, registerUser, getUser, authenticate }
