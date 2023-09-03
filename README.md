@@ -7,9 +7,6 @@ This repository contains the API documentation and Functionality description of 
 - Node.js
 - Express.js
 - MongoDB
-- TailWind.Css
-- Headless.Ui
-- json-web-token
 
 ## 🚀 Routes
 
@@ -135,4 +132,14 @@ This repository contains the API documentation and Functionality description of 
 2. After registering and username validation U will be redirected to password verification page where you have to enter your valid password and if you forgot your password you can edit your password by clicking on forgot password option. From there you will be redirected to OTP verification page. An OTP will be send to your registered Email. You have to enter valid OTP and after OTP verification you will be redirected to Change password page. There you can change your password. After changing the password you will redirected again to the password verification page and there you will have to enter your new password.
 3. After password Verification you will be redirect to you dashboard and there you can see your existing tasks, and can create new task by clicking on Create button. And Can edit and delete the Existing Task. Tasks are arranged on basis of Priority.
 ---
+
+## 💻  env Variables
+### Client env Variable :
+-   REACT_APP_SERVER_DOMAIN='http://localhost:8080'
+### Server env Variables:
+- MONGO_URL = "<YOUR_MOGODB_URI>"
+- JWT_SECRET = "<JWT_SECRET>"
+- PASSWORD="PdrC8ePFmumbKhwfBc"
+
+
 
