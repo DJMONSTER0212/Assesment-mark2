@@ -141,9 +141,7 @@ This repository contains the API documentation and Functionality description of 
 - JWT_SECRET = "<JWT_SECRET>"
 - PASSWORD="PdrC8ePFmumbKhwfBc"
 
-
 [![YouTube Video](https://img.youtube.com/vi/ckd_DQZzJLs/0.jpg)](https://www.youtube.com/watch?v=ckd_DQZzJLs)
 
-<iframe width="560" height="315" src="https://www.youtube.com/embed/ckd_DQZzJLs?si=IahY9gZ59fDWZX2n" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 
