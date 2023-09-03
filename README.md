@@ -1,4 +1,4 @@
-# 🚀 API Documentation
+# 🚀 API & Application Documentation
 
 This repository contains the API documentation and Functionality description of my project. The API is designed to manage users, authentication, OTPs, sessions, and tasks.
 
@@ -126,5 +126,10 @@ This repository contains the API documentation and Functionality description of 
 7. Go to cliet Directory and run the client side application using `npm run start`.
 8. Go to Server Directory and run the server using `nodemon server.js`.
 
+
+## 🚀 Login/Sign-Up and Work flow
+1. You will land on the Username page, there you will have to enter your registered username and if you have not registered yet you can register by clicking on the register option.
+2. After registering and username validation U will be redirected to password verification page where you have to enter your valid password and if you forgot your password you can edit your password by clicking on forgot password option. From there you will be redirected to OTP verification page. An OTP will be send to your registered Email. You have to enter valid OTP and after OTP verification you will be redirected to Change password page. There you can change your password. After changing the password you will redirected again to the password verification page and there you will have to enter your new password.
+3. After password Verification you will be redirect to you dashboard and there you can see your existing tasks, and can create new task by clicking on Create button. And Can edit and delete the Existing Task. Tasks are arranged on basis of Priority.
 ---
 
