@@ -7,6 +7,9 @@ This repository contains the API documentation and Functionality description of 
 - Node.js
 - Express.js
 - MongoDB
+- TailWind.Css
+- Headless.Ui
+- json-web-token
 
 ## 🚀 Routes
 
