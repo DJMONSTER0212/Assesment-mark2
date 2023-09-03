@@ -27,7 +27,7 @@ const Register = () => {
             body:data
         })
         .then(async(res)=> await res.json())
-        .then(async (data)=>{ setFile2(data.url); console.log(file2)})
+        .then(async (data)=>{ setFile2(data.url); console.log(data.url)})
         .catch((err)=>{
             console.log(err)
         })
@@ -42,9 +42,9 @@ const Register = () => {
         validateOnBlur: false,
         validateOnChange: false,
         onSubmit: async values => {
-            // await fileUpload();
-            values = await Object.assign(values,{profile : file||''});
-            // console.log(values)
+            await fileUpload();
+            values = await Object.assign(values,{profile : file2||''});
+            console.log(values)
             let registerPromise = registerUser(values);
             toast.promise(registerPromise,{
                 loading:"Creating...",

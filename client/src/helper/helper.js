@@ -119,4 +119,33 @@ export const createTask = async ({username,title,description,priority})=>{
     }
 }
 
-// module = { resetPassword, verifyOTP, generateOTP, updateUser, verifyPassword, registerUser, getUser, authenticate }
+export const getAllTasks = async(username)=>{
+    try {
+        const {data} = await axios.get(`/api/task/${username}`,);
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const deleteTask = async (id)=>{
+    try {
+        const {status} = await axios.delete(`/api/task/delete/${id}`);
+        return status;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const updateTask = async (id,body)=>{
+    // console.log(id)
+    try {
+        const status = axios.put(`/api/task/update/${id}`,body)
+        console.log(status)
+        return status;
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+// // module = { resetPassword, verifyOTP, generateOTP, updateUser, verifyPassword, registerUser, getUser, authenticate }

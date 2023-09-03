@@ -12,6 +12,7 @@ import PageNotFound from './components/PageNotFound';
 import { AuthorizeUser, ProtectRoute } from './middleware/auth';
 import Dashboard from './components/Dashboard';
 import CreateTask from './components/CreateTask';
+import TaskState from './context/tasks/TaskState';
 
 
 
@@ -60,9 +61,11 @@ const router = createBrowserRouter([
 function App() {
   return (
     <main className="App">
+      <TaskState>
       <RouterProvider router={router}>
 
       </RouterProvider>
+      </TaskState>
     </main>
   );
 }

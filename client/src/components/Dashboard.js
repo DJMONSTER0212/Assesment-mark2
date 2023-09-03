@@ -1,18 +1,22 @@
-import { Fragment } from 'react'
+import { Fragment, useContext, useEffect, useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Popover } from '@headlessui/react'
-import {Link, useNavigate} from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
+import TaskCard from './TaskCard'
+import { getAllTasks } from '../helper/helper'
+import { useAuthStore } from "../store/store"
+import useFetch from '../hooks/fetch.hook'
+import TaskContext from '../context/tasks/TaskContext'
 
 const user = {
     name: 'Tom Cook',
     email: 'tom@example.com',
     imageUrl:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
+        'https://imgv3.fotor.com/images/blog-cover-image/10-profile-picture-ideas-to-make-you-stand-out.jpg',
 }
 const navigation = [
     { name: 'Tasks', href: '/dashboard', current: true },
-  
 ]
 const userNavigation = [
     { name: 'Your Profile', href: '/profile' },
@@ -24,22 +28,38 @@ function classNames(...classes) {
 }
 
 export default function Dashboard() {
+    const { username } = useAuthStore(state => state.auth)
+    // const context = useContext(TaskContext);
+    if(!username) navigate('/');
+    // const {tasks,getTasks} = context;
+    console.log(username);
     const navigate = useNavigate();
+    const [{ isLoading, apiData, serverError }] = useFetch();
+    // console.log(apiData)
+
+    const [sortedTasks, setSortedTask] = useState([]);
+    const [count, setCount] = useState(0);
+    useEffect(() => {
+        const taskFinder = async () => {
+            let tasks = await getAllTasks(username);
+            let sot = tasks.sort(
+                (t1, t2) => (t1.priority < t2.priority) ? 1 : (t1.priority > t2.priority) ? -1 : 0
+            )
+            setCount(sot.length);
+            console.log(sot, sot.length)
+            setSortedTask(sot)
+        }
+        taskFinder();
+    }, [count])
     function userLogout() {
         console.log("hello")
         localStorage.removeItem('token');
         navigate('/');
     }
+
+
     return (
         <>
-            {/*
-        This example requires updating your template:
-
-        ```
-        <html class="h-full bg-gray-100">
-        <body class="h-full">
-        ```
-      */}
             <div className="min-h-full">
                 <Disclosure as="nav" className="bg-gray-800">
                     {({ open }) => (
@@ -76,7 +96,7 @@ export default function Dashboard() {
                                     </div>
                                     <div className="hidden md:block">
                                         <div className="ml-4 flex items-center md:ml-6">
-                                            
+
 
                                             {/* Profile dropdown */}
                                             <Menu as="div" className="relative ml-3">
@@ -97,11 +117,11 @@ export default function Dashboard() {
                                                     leaveTo="transform opacity-0 scale-95"
                                                 >
                                                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                                                        {userNavigation.map((item,index) => (
+                                                        {userNavigation.map((item, index) => (
                                                             <Menu.Item key={item.name}>
                                                                 {({ active }) => (
                                                                     <Link
-                                                                        onClick={index===1?userLogout:()=>{}}
+                                                                        onClick={index === 1 ? userLogout : () => { }}
                                                                         to={item.href}
                                                                         className={classNames(
                                                                             active ? 'bg-gray-100' : '',
@@ -187,12 +207,23 @@ export default function Dashboard() {
                 </Disclosure>
 
                 <header className="shadow">
-                    <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                        <h1 className="text-3xl font-bold tracking-tight text-gray-900">Tasks</h1>
+                    <div className='flex flex-row'>
+                        <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                            <h1 className="text-3xl font-bold tracking-tight text-gray-900">Tasks</h1>
+                        </div>
+                        <button onClick={() => navigate('/create')} className="bg-gray-300 h-10 my-5 mx-3 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center">
+                            <i className="fa-regular mx-1 fa-plus"></i>
+                            <span>Create</span>
+                        </button>
                     </div>
+
                 </header>
                 <main>
-                    <div className="mx-auto max-w-7xl py-6 sm:px-6 lg:px-8">{/* Your content */}</div>
+                    <div className="mx-auto items-center max-w-7xl flex flex-col justify-around  py-6 sm:px-6 lg:px-8">
+                        {sortedTasks.map((task) => (
+                            <TaskCard count={count} setCount={setCount} sortedTasks={sortedTasks} setSortedTask={setSortedTask} Task={task} />
+                        ))}
+                    </div>
                 </main>
             </div>
         </>

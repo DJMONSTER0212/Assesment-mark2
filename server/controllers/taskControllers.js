@@ -11,7 +11,7 @@ const createTask = async (req,res)=>{
         if(priority==="High"){
             Pvalue = 2;
         }
-        else if(priority==="Mid"){
+        else if(priority==="Medium"){
             Pvalue = 1;
         }
         else if(priority==="Low"){
@@ -31,7 +31,8 @@ const createTask = async (req,res)=>{
 }
 
 const getAllTasks = async (req,res)=>{
-    const {username} = req.body;
+    const {username} = req.params;
+    console.log(username);
     if(!username) return res.status(400).send({msg:"Username Not found...!"});
     try {
         const data = await Task.find({username});
@@ -45,13 +46,14 @@ const getAllTasks = async (req,res)=>{
     }
 }
 const deleteTask = async (req,res)=>{
-    const {id} = req.body;
+    const {taskId} = req.params;
+    console.log(taskId)
     try {
-        const user = await Task.findById(id);
+        const user = await Task.findById(taskId);
         if(!user){
             return res.status(404).send({msg:"Task Not found..!!"});
         }
-        const deleted = await Task.findByIdAndDelete(id);
+        const deleted = await Task.findByIdAndDelete(taskId);
         if(!deleted) return res.status(500).send({msg:"Unable to delete Task...!"});
 
         res.status(201).send({msg:"Task Deleted SuccessFully...!"});
@@ -61,7 +63,7 @@ const deleteTask = async (req,res)=>{
 }
 
 const updateTask = async (req, res) => {
-    const { taskId } = req.query;
+    const { taskId } = req.params;
     console.log(taskId);
     try {
         // const id = req.query.id;

@@ -53,7 +53,7 @@ const Password = () => {
                     </div>
                     <form className='py-1 ' onSubmit={formik.handleSubmit} >
                         <div className='profile flex justify-center py-4 '>
-                            <img src={`${apiData?.profile}`|| Avatar} className={styles.profile_img} alt="avatar" />
+                            <img  src={`${apiData?.profile}`|| Avatar} className={styles.profile_img} alt="avatar" />
                         </div>
                         <div className="textbox flex flex-col items-center gap-6">
                             <input {...formik.getFieldProps('password')} className={styles.textbox} type="password" placeholder='Password' />

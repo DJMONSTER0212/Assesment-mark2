@@ -16,6 +16,7 @@ const Profile = () => {
     // const {username} = useA
     
     const [file, setFile] = useState();
+    const [file2, setFile2] = useState();
     const [{ isLoading, apiData, serverError }] = useFetch();
     const formik = useFormik({
         initialValues: {
@@ -30,7 +31,8 @@ const Profile = () => {
         validateOnBlur: false,
         validateOnChange: false,
         onSubmit: async values => {
-            values = await Object.assign(values, { profile: file || '' });
+            await fileUpload();
+            values = await Object.assign(values, { profile: file2||file || '' });
             let updatePromise = updateUser(values)
             toast.promise(updatePromise,{
                 loading:'Updating...',
@@ -41,6 +43,22 @@ const Profile = () => {
         }
     })
 
+    const fileUpload = async () => {
+        const data = new FormData();
+        data.append("file", file)
+        data.append("upload_preset", "DJ_Monster")
+        data.append("cloud_name", "dqdpzwcqp")
+
+        await fetch("https://api.cloudinary.com/v1_1/dqdpzwcqp/image/upload", {
+            method: "post",
+            body: data
+        })
+            .then(async (res) => await res.json())
+            .then(async (data) => { setFile2(data.url); console.log(data.url) })
+            .catch((err) => {
+                console.log(err)
+            })
+    }
     const onUpload = async e => {
         const base64 = await convertToBase64(e.target.files[0]);
         setFile(base64);

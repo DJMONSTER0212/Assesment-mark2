@@ -3,11 +3,14 @@ const Mailgen = require("mailgen");
 
 
 let nodeConfig = {
-    host: 'smtp.ethereal.email',
-    port: 587,
+    // host: 'smtp.ethereal.email',
+    service: 'gmail',
+    host: 'smtp.gmail.com',
+    // port: 587,
+    // secure:false,
     auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD
+        user: "devanshjain02122003@gmail.com"||process.env.EMAIL,
+        pass: "tqngsotxrvrqrbyz"||process.env.PASSWORD
     }
 }
 
